@@ -1,0 +1,112 @@
+
+===========================================================================
+report_checks -unconstrained
+===========================================================================
+======================= Typical Corner ===================================
+
+Startpoint: i_rst_n (input port clocked by i_clk)
+Endpoint: _2070_ (rising edge-triggered flip-flop clocked by i_clk)
+Path Group: i_clk
+Path Type: max
+
+Fanout     Cap    Slew   Delay    Time   Description
+-----------------------------------------------------------------------------
+                          0.00    0.00   clock i_clk (rise edge)
+                          0.00    0.00   clock network delay (propagated)
+                         20.00   20.00 ^ input external delay
+                  0.00    0.00   20.00 ^ i_rst_n (in)
+     1    0.00                           i_rst_n (net)
+                  0.00    0.00   20.00 ^ input2/A (sky130_fd_sc_hd__dlymetal6s2s_1)
+                  0.21    0.19   20.19 ^ input2/X (sky130_fd_sc_hd__dlymetal6s2s_1)
+     5    0.02                           net2 (net)
+                  0.21    0.00   20.19 ^ _1031_/B1_N (sky130_fd_sc_hd__a21boi_4)
+                  0.20    0.28   20.47 ^ _1031_/Y (sky130_fd_sc_hd__a21boi_4)
+     4    0.02                           _0434_ (net)
+                  0.20    0.00   20.47 ^ _1034_/B1 (sky130_fd_sc_hd__o21a_4)
+                  0.17    0.26   20.73 ^ _1034_/X (sky130_fd_sc_hd__o21a_4)
+    10    0.05                           _0436_ (net)
+                  0.17    0.00   20.73 ^ _1037_/B (sky130_fd_sc_hd__and2_1)
+                  0.16    0.23   20.97 ^ _1037_/X (sky130_fd_sc_hd__and2_1)
+     3    0.02                           _0439_ (net)
+                  0.16    0.00   20.97 ^ _1047_/A2 (sky130_fd_sc_hd__o21ba_1)
+                  0.04    0.13   21.10 ^ _1047_/X (sky130_fd_sc_hd__o21ba_1)
+     1    0.00                           _0448_ (net)
+                  0.04    0.00   21.10 ^ _1048_/A (sky130_fd_sc_hd__buf_2)
+                  0.16    0.19   21.28 ^ _1048_/X (sky130_fd_sc_hd__buf_2)
+     9    0.03                           _0051_ (net)
+                  0.16    0.00   21.28 ^ _1058_/B (sky130_fd_sc_hd__nor2_1)
+                  0.06    0.09   21.37 v _1058_/Y (sky130_fd_sc_hd__nor2_1)
+     3    0.01                           _0456_ (net)
+                  0.06    0.00   21.37 v _1060_/A (sky130_fd_sc_hd__or2b_1)
+                  0.07    0.25   21.63 v _1060_/X (sky130_fd_sc_hd__or2b_1)
+     3    0.01                           _0458_ (net)
+                  0.07    0.00   21.63 v _1066_/B1 (sky130_fd_sc_hd__o211a_1)
+                  0.04    0.13   21.75 v _1066_/X (sky130_fd_sc_hd__o211a_1)
+     1    0.00                           _0462_ (net)
+                  0.04    0.00   21.75 v _1070_/A (sky130_fd_sc_hd__or2_1)
+                  0.06    0.23   21.99 v _1070_/X (sky130_fd_sc_hd__or2_1)
+     1    0.00                           _0465_ (net)
+                  0.06    0.00   21.99 v _1071_/A (sky130_fd_sc_hd__clkbuf_1)
+                  0.02    0.09   22.08 v _1071_/X (sky130_fd_sc_hd__clkbuf_1)
+     1    0.00                           _0003_ (net)
+                  0.02    0.00   22.08 v _2070_/D (sky130_fd_sc_hd__dfxtp_1)
+                                 22.08   data arrival time
+
+                        100.00  100.00   clock i_clk (rise edge)
+                          0.00  100.00   clock source latency
+                  0.00    0.00  100.00 ^ i_clk (in)
+     1    0.03                           i_clk (net)
+                  0.00    0.00  100.00 ^ clkbuf_0_i_clk/A (sky130_fd_sc_hd__clkbuf_16)
+                  0.14    0.19  100.19 ^ clkbuf_0_i_clk/X (sky130_fd_sc_hd__clkbuf_16)
+    16    0.13                           clknet_0_i_clk (net)
+                  0.14    0.00  100.19 ^ clkbuf_4_6_0_i_clk/A (sky130_fd_sc_hd__clkbuf_8)
+                  0.07    0.18  100.38 ^ clkbuf_4_6_0_i_clk/X (sky130_fd_sc_hd__clkbuf_8)
+    11    0.03                           clknet_4_6_0_i_clk (net)
+                  0.07    0.00  100.38 ^ _2070_/CLK (sky130_fd_sc_hd__dfxtp_1)
+                         -0.50   99.88   clock uncertainty
+                          0.00   99.88   clock reconvergence pessimism
+                         -0.09   99.78   library setup time
+                                 99.78   data required time
+-----------------------------------------------------------------------------
+                                 99.78   data required time
+                                -22.08   data arrival time
+-----------------------------------------------------------------------------
+                                 77.71   slack (MET)
+
+
+
+
+===========================================================================
+report_checks --slack_max -0.01
+============================================================================
+======================= Typical Corner ===================================
+
+No paths found.
+
+
+===========================================================================
+ report_check_types -max_slew -max_cap -max_fanout -violators
+============================================================================
+======================= Typical Corner ===================================
+
+
+
+===========================================================================
+report_parasitic_annotation -report_unannotated
+============================================================================
+Found 0 unannotated drivers.
+Found 0 partially unannotated drivers.
+
+===========================================================================
+max slew violation count 0
+max fanout violation count 0
+max cap violation count 0
+============================================================================
+
+===========================================================================
+check_setup -verbose -unconstrained_endpoints -multiple_clock -no_clock -no_input_delay -loops -generated_clocks
+===========================================================================
+Warning: There are 3 input ports missing set_input_delay.
+  i_mosi
+  i_sck
+  i_ss_n

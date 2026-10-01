@@ -1,0 +1,177 @@
+VERSION 5.7 ;
+  NOWIREEXTENSIONATPIN ON ;
+  DIVIDERCHAR "/" ;
+  BUSBITCHARS "[]" ;
+MACRO top
+  CLASS BLOCK ;
+  FOREIGN top ;
+  ORIGIN 0.000 0.000 ;
+  SIZE 180.000 BY 115.000 ;
+  PIN VGND
+    DIRECTION INOUT ;
+    USE GROUND ;
+    PORT
+      LAYER met4 ;
+        RECT 7.960 2.480 9.560 111.760 ;
+    END
+    PORT
+      LAYER met4 ;
+        RECT 47.960 2.480 49.560 111.760 ;
+    END
+    PORT
+      LAYER met4 ;
+        RECT 87.960 2.480 89.560 111.760 ;
+    END
+    PORT
+      LAYER met4 ;
+        RECT 127.960 2.480 129.560 111.760 ;
+    END
+    PORT
+      LAYER met4 ;
+        RECT 167.960 2.480 169.560 111.760 ;
+    END
+    PORT
+      LAYER met5 ;
+        RECT 0.220 10.220 179.640 11.820 ;
+    END
+    PORT
+      LAYER met5 ;
+        RECT 0.220 50.220 179.640 51.820 ;
+    END
+    PORT
+      LAYER met5 ;
+        RECT 0.220 90.220 179.640 91.820 ;
+    END
+  END VGND
+  PIN VPWR
+    DIRECTION INOUT ;
+    USE POWER ;
+    PORT
+      LAYER met4 ;
+        RECT 4.660 2.480 6.260 111.760 ;
+    END
+    PORT
+      LAYER met4 ;
+        RECT 44.660 2.480 46.260 111.760 ;
+    END
+    PORT
+      LAYER met4 ;
+        RECT 84.660 2.480 86.260 111.760 ;
+    END
+    PORT
+      LAYER met4 ;
+        RECT 124.660 2.480 126.260 111.760 ;
+    END
+    PORT
+      LAYER met4 ;
+        RECT 164.660 2.480 166.260 111.760 ;
+    END
+    PORT
+      LAYER met5 ;
+        RECT 0.220 6.920 179.640 8.520 ;
+    END
+    PORT
+      LAYER met5 ;
+        RECT 0.220 46.920 179.640 48.520 ;
+    END
+    PORT
+      LAYER met5 ;
+        RECT 0.220 86.920 179.640 88.520 ;
+    END
+  END VPWR
+  PIN i_clk
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.852000 ;
+    PORT
+      LAYER met3 ;
+        RECT 176.000 71.440 180.000 72.040 ;
+    END
+  END i_clk
+  PIN i_mosi
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.196500 ;
+    PORT
+      LAYER met2 ;
+        RECT 80.590 0.000 80.870 4.000 ;
+    END
+  END i_mosi
+  PIN i_rst_n
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.126000 ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 85.040 4.000 85.640 ;
+    END
+  END i_rst_n
+  PIN i_sck
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.196500 ;
+    PORT
+      LAYER met2 ;
+        RECT 0.090 0.000 0.370 4.000 ;
+    END
+  END i_sck
+  PIN i_ss_n
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.196500 ;
+    PORT
+      LAYER met2 ;
+        RECT 54.830 111.000 55.110 115.000 ;
+    END
+  END i_ss_n
+  PIN o_cordic_done
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 0.891000 ;
+    PORT
+      LAYER met2 ;
+        RECT 138.550 111.000 138.830 115.000 ;
+    END
+  END o_cordic_done
+  PIN o_miso
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 0.891000 ;
+    PORT
+      LAYER met2 ;
+        RECT 164.310 0.000 164.590 4.000 ;
+    END
+  END o_miso
+  OBS
+      LAYER li1 ;
+        RECT 0.460 2.635 179.400 111.605 ;
+      LAYER met1 ;
+        RECT 0.160 1.400 179.400 112.160 ;
+      LAYER met2 ;
+        RECT 0.160 110.720 54.550 112.190 ;
+        RECT 55.390 110.720 138.270 112.190 ;
+        RECT 139.110 110.720 177.920 112.190 ;
+        RECT 0.160 4.280 177.920 110.720 ;
+        RECT 0.650 1.370 80.310 4.280 ;
+        RECT 81.150 1.370 164.030 4.280 ;
+        RECT 164.870 1.370 177.920 4.280 ;
+      LAYER met3 ;
+        RECT 4.000 86.040 176.575 111.685 ;
+        RECT 4.400 84.640 176.575 86.040 ;
+        RECT 4.000 72.440 176.575 84.640 ;
+        RECT 4.000 71.040 175.600 72.440 ;
+        RECT 4.000 2.555 176.575 71.040 ;
+      LAYER met4 ;
+        RECT 25.135 27.375 44.260 83.465 ;
+        RECT 46.660 27.375 47.560 83.465 ;
+        RECT 49.960 27.375 84.260 83.465 ;
+        RECT 86.660 27.375 87.560 83.465 ;
+        RECT 89.960 27.375 124.260 83.465 ;
+        RECT 126.660 27.375 127.560 83.465 ;
+        RECT 129.960 27.375 157.945 83.465 ;
+      LAYER met5 ;
+        RECT 79.700 41.700 110.740 43.300 ;
+  END
+END top
+END LIBRARY
+
