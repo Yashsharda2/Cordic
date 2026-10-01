@@ -1,0 +1,5 @@
+.venv/
+runs/
+sim/cocotb/sim_build/
+sim/cocotb/results.xml
+__pycache__/
