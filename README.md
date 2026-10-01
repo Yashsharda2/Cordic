@@ -14,14 +14,14 @@ The coprocessor accepts a 16-bit target rotation angle over an SPI bus and compu
 ```
                      Host System / MCU (e.g., RP2040)
                                     │ SPI
-                                                     ▼
+                                    ▼
                           ┌───────────────────┐
                           │   SPI Target      │
                           │   (Mode 0, MSB)   │
                           └─────────┬─────────┘
                                     │
                                     │ 16-bit Input Angle
-                                                     ▼
+                                    ▼
                           ┌───────────────────┐
                           │  CORDIC Engine    │
                           │  (15 Iterations)  │
@@ -29,7 +29,7 @@ The coprocessor accepts a 16-bit target rotation angle over an SPI bus and compu
                           └─────────┬─────────┘
                                     │
                          ┌──────────┴──────────┐
-                                     ▼                               ▼
+                         ▼                     ▼
                   ┌────────────┐        ┌────────────┐
                   │ COS Output │        │ SIN Output │
                   │  (Q1.15)   │        │  (Q1.15)   │
