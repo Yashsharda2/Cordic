@@ -1,3 +1,7 @@
+Here is the complete, professional `README.md` for your CORDIC verification suite, structured using your project's exact file paths, target modules, and actual test results.
+
+---
+
 # CORDIC — Cocotb Verification Suite
 
 ## Setup
@@ -15,10 +19,27 @@ source ../../.venv/bin/activate
 
 ## Running Tests
 
-```bash
+### Standard Behavioral RTL Simulation
 
-# Using the MODULE variable
-make clean && make MODULE=test_spi_protocol
+```bash
+# Run a single test module
+make clean && make MODULE=test_corner_cases
+
+# Run all test modules in series
+for m in test_corner_cases test_spi_protocol test_random_sweep test_reset_and_timing; do
+    echo "=== Running \(m ===" && make clean && make MODULE=\)m 2>&1 | tail -5
+done
+
+```
+
+### Gate-Level Simulation (GLS)
+
+```bash
+# Run a single test module against the synthesized netlist
+make clean && make GLS=1 MODULE=test_corner_cases
+
+# Run the full test suite against the synthesized netlist
+make clean && make GLS=1 MODULE=test_corner_cases,test_spi_protocol,test_random_sweep,test_reset_and_timing
 
 ```
 
@@ -28,8 +49,14 @@ make clean && make MODULE=test_spi_protocol
 
 | Flow | Command | What it uses | Catches |
 | --- | --- | --- | --- |
-| **RTL Behavioural** | `make MODULE=` | Icarus Verilog (`iverilog`) | Functional bugs, corner-case math errors, SPI frame state mismatches |
-| **Gate-Level (GL)** | `NETLIST=$NL make MODULE=` | Icarus Verilog + Synthesized Netlist | Synthesis bugs, unreset flip-flops, netlist gate-level timing / X-propagation |
+| **RTL Behavioural** | `make MODULE=` | Icarus Verilog (`iverilog`) | Functional logic bugs, fixed-point math precision errors, SPI state machine mismatches |
+| **Gate-Level (GLS)** | `make GLS=1 MODULE=` | Icarus Verilog + Sky130 PDK models + Synthesized Netlist | Synthesis translation bugs, unreset flip-flops, structural netlist gate-level timing / X-propagation |
+
+* **RTL Sources Target**: `src/top.v`, `src/cordic_circular.v`, `src/spi_target.v`
+
+* **GLS Netlist Target**: `results/top_gl.v`
+
+* **PDK Cell Library**: `sim/cocotb/sky130/` (`primitives.v`, `sky130_fd_sc_hd.v`)
 
 ---
 
@@ -51,23 +78,23 @@ make clean && make MODULE=test_spi_protocol
 
 ```text
 ┌──────────────────────────┐                   ┌────────────────────────────────────────┐
-│      Python cocotb       │     SPI Bus       │                 top.v                  │
-│  test_*.py / utils.py    │   (i_ss_n,        │             (Verilog DUT)              │
+│       Python cocotb      │     SPI Bus       │                 top.v                  │
+│   test_*.py / utils.py   │   (i_ss_n,        │             (Verilog DUT)              │
 │                          │    i_sck,         │                                        │
-│  • Fixed-Point Conversion│    i_mosi,        │  ┌──────────────────────────────────┐  │
+│ • Fixed-Point Conversion │    i_mosi,        │  ┌──────────────────────────────────┐  │
 │                          │    o_miso)        │  │           spi_target.v           │  │
-│  • SPI Master BFM        │◄─────────────────►│  └────────────────┬─────────────────┘  │
-│  • Error Tolerance Checks│                   │                   │                    │
-│                          │   System Signals  │                   │ w_rx_data          │
+│ • SPI Master BFM         │◄─────────────────►│  └────────────────┬─────────────────┘  │
+│                          │                   │                   │                    │
+│ • Error Tolerance Checks │   System Signals  │                   │ w_rx_data          │
 │                          │  (i_clk, i_rst_n) │                   ▼                    │
 │                          │──────────────────►│  ┌──────────────────────────────────┐  │
-│                          │                   │  │        cordic_circular.v         │  │
+│                          │                   │  │         cordic_circular.v        │  │
 │                          │                   │  └──────────────────────────────────┘  │
 └──────────────────────────┘                   └────────────────────────────────────────┘
              │                                                      │
              ▼                                                      ▼
-      Icarus Verilog                                         RTL Simulation
-      (VPI Interface)                                     (0 Errors ASIC Flow)
+      Icarus Verilog                                         RTL / GLS Simulation
+      (VPI Interface)                                        (0 Errors ASIC Flow)
 
 ```
 
@@ -91,8 +118,8 @@ make clean && make MODULE=test_spi_protocol
 
 ```text
 i_ss_n : \____________________________________________________________________/
-         |               Word 0               |               Word 1          |
-MOSI   : [ Target Input Angle (Signed 16-bit) ] [  Dummy Data (16-bit 0x0000) ]
+         |                Word 0               |                Word 1          |
+MOSI   : [ Target Input Angle (Signed 16-bit) ] [   Dummy Data (16-bit 0x0000) ]
 MISO   : [ COS Output (From PREVIOUS Frame)   ] [ SIN Output (CURRENT Angle)  ]
 
 ```
