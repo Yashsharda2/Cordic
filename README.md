@@ -2,7 +2,7 @@
 
 A high-precision, low-latency circular CORDIC (Coordinate Rotation Digital Computer) hardware accelerator for the **SkyWater Sky130 (130 nm)** open-source PDK, hardened with the **OpenLane 1.x** automated ASIC flow.
 
-The coprocessor accepts a 16-bit target rotation angle over an SPI bus and computes both Sine ($\sin\theta$) and Cosine ($\cos\theta$) in Q1.15 fixed-point format using a 15-stage iterative micro-rotation DSP engine.
+The coprocessor accepts a 16-bit target rotation angle over an SPI bus and computes both Sine and Cosinein Q1.15 fixed-point format using a 15-stage iterative micro-rotation DSP engine.
 
 ![CORDIC chip layout](images/chip.png)
 *Final layout (`results/top.gds`), 180 µm × 115 µm.*
@@ -41,8 +41,8 @@ The coprocessor accepts a 16-bit target rotation angle over an SPI bus and compu
 ## Key Features
 
 * **Iterative Hardware CORDIC**: 15-stage shift-and-add circular rotation algorithm computing fixed-point Sine and Cosine.
-* **Fixed-Point Precision**: Q1.15 arithmetic (1 sign bit, 15 fractional bits) over the $[-180^\circ, +180^\circ]$ range.
-* **Low Error Margin**: Absolute error $\le 0.002$.
+* **Fixed-Point Precision**: Q1.15 arithmetic (1 sign bit, 15 fractional bits) over the [-180°, +180°] range.
+* **Low Error Margin**: Absolute error < 0.002.
 * **SPI Target Interface**: Continuous 2-word streaming protocol (SPI Mode 0, CPOL=0, CPHA=0) with full-duplex MOSI/MISO.
 * **Synchronous Design**: Single system clock domain (posedge) with an active-low reset.
 
@@ -92,8 +92,8 @@ MISO   : [ COS Output (From PREVIOUS Frame)   ] [ SIN Output (CURRENT Angle)   ]
 
 ### Data Encoding
 
-* **Angle Input**: Signed 16-bit integer mapping $[-32768, +32767] \rightarrow [-180^\circ, +180^\circ]$.
-* **Sin/Cos Outputs**: Signed Q1.15 fixed-point mapping $[-32768, +32767] \rightarrow [-1.0, +0.999969]$.
+* **Angle Input**: Signed 16-bit integer mapping $[-32768, +32767] [-180°, +180°]$.
+* **Sin/Cos Outputs**: Signed Q1.15 fixed-point mapping [-32768, +32767] [-1.0, +0.999969].
 
 ---
 
