@@ -1,7 +1,3 @@
-Here is the complete, professional `README.md` for your CORDIC verification suite, structured using your project's exact file paths, target modules, and actual test results.
-
----
-
 # CORDIC — Cocotb Verification Suite
 
 ## Setup
