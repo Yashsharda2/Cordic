@@ -8,7 +8,6 @@ cd CORDIC/sim/cocotb
 
 # Activate Python virtual environment
 source ../../.venv/bin/activate
-
 ```
 
 ---
@@ -23,9 +22,8 @@ make clean && make MODULE=test_corner_cases
 
 # Run all test modules in series
 for m in test_corner_cases test_spi_protocol test_random_sweep test_reset_and_timing; do
-    echo "=== Running \(m ===" && make clean && make MODULE=\)m 2>&1 | tail -5
+    echo "=== Running $m ===" && make clean && make MODULE=$m 2>&1 | tail -5
 done
-
 ```
 
 ### Gate-Level Simulation (GLS)
@@ -36,7 +34,6 @@ make clean && make GLS=1 MODULE=test_corner_cases
 
 # Run the full test suite against the synthesized netlist
 make clean && make GLS=1 MODULE=test_corner_cases,test_spi_protocol,test_random_sweep,test_reset_and_timing
-
 ```
 
 ---
@@ -45,13 +42,11 @@ make clean && make GLS=1 MODULE=test_corner_cases,test_spi_protocol,test_random_
 
 | Flow | Command | What it uses | Catches |
 | --- | --- | --- | --- |
-| **RTL Behavioural** | `make MODULE=` | Icarus Verilog (`iverilog`) | Functional logic bugs, fixed-point math precision errors, SPI state machine mismatches |
-| **Gate-Level (GLS)** | `make GLS=1 MODULE=` | Icarus Verilog + Sky130 PDK models + Synthesized Netlist | Synthesis translation bugs, unreset flip-flops, structural netlist gate-level timing / X-propagation |
+| **RTL Behavioural** | `make MODULE=<module>` | Icarus Verilog (`iverilog`) | Functional logic bugs, fixed-point math precision errors, SPI state machine mismatches |
+| **Gate-Level (GLS)** | `make GLS=1 MODULE=<module>` | Icarus Verilog + Sky130 PDK models + Synthesized Netlist | Synthesis translation bugs, unreset flip-flops, structural netlist gate-level timing / X-propagation |
 
 * **RTL Sources Target**: `src/top.v`, `src/cordic_circular.v`, `src/spi_target.v`
-
 * **GLS Netlist Target**: `results/top_gl.v`
-
 * **PDK Cell Library**: `sim/cocotb/sky130/` (`primitives.v`, `sky130_fd_sc_hd.v`)
 
 ---
@@ -62,9 +57,9 @@ make clean && make GLS=1 MODULE=test_corner_cases,test_spi_protocol,test_random_
 
 | Test | Module File | Description | Status |
 | --- | --- | --- | --- |
-| **Corner Cases** | `test_corner_cases.py` | Validates cardinal angles ($0^\circ, \pm 90^\circ, \pm 180^\circ$) and boundary bit precision limits ($\pm 1$ LSB). | ✅ PASS |
-| **SPI Protocol & Timing** | `test_spi_protocol.py` | Tests mid-word $\text{CS\_N}$ abort recovery, back-to-back frames, and $f_{\text{SCK}} = f_{\text{CLK}} / 40$ timing boundary limits. | ✅ PASS |
-| **Randomized Sweep** | `test_random_sweep.py` | Executes 1,000 randomized input angles, validating fixed-point output against floating-point math ($< 0.002$ max error tolerance). | ✅ PASS |
+| **Corner Cases** | `test_corner_cases.py` | Validates cardinal angles (0°, ±90°, ±180°) and boundary bit precision limits (±1 LSB). | ✅ PASS |
+| **SPI Protocol & Timing** | `test_spi_protocol.py` | Tests mid-word `CS_N` abort recovery, back-to-back frames, and the `f_SCK = f_CLK / 40` timing boundary limit. | ✅ PASS |
+| **Randomized Sweep** | `test_random_sweep.py` | Executes 1,000 randomized input angles, validating fixed-point output against floating-point math (max error < 0.002). | ✅ PASS |
 | **Reset & Recovery** | `test_reset_and_timing.py` | Asserts synchronous reset mid-calculation during active 15-iteration CORDIC execution and verifies clean recovery. | ✅ PASS |
 | **Full Regression** | `test_full_regression.py` | Continuous multi-frame streaming transaction regression without idle cycles between SPI transfers. | ✅ PASS |
 
@@ -91,7 +86,6 @@ make clean && make GLS=1 MODULE=test_corner_cases,test_spi_protocol,test_random_
              ▼                                                      ▼
       Icarus Verilog                                         RTL / GLS Simulation
       (VPI Interface)                                        (0 Errors ASIC Flow)
-
 ```
 
 ---
@@ -105,7 +99,7 @@ make clean && make GLS=1 MODULE=test_corner_cases,test_spi_protocol,test_random_
 | `i_clk` | Input | Wire | Primary system clock (10 MHz nominal) |
 | `i_rst_n` | Input | Wire | Active-low synchronous reset |
 | `i_ss_n` | Input | Wire | SPI Slave Select (Active Low) |
-| `i_sck` | Input | Wire | Asynchronous SPI Serial Clock ($f_{\text{SCK}} \le f_{\text{CLK}} / 40$) |
+| `i_sck` | Input | Wire | Asynchronous SPI Serial Clock (`f_SCK ≤ f_CLK / 40`) |
 | `i_mosi` | Input | Wire | SPI Master-Out Slave-In |
 | `o_miso` | Output | Wire | SPI Master-In Slave-Out |
 | `o_cordic_done` | Output | Wire | 1-cycle flag pulse indicating calculation completion |
@@ -117,8 +111,7 @@ i_ss_n : \____________________________________________________________________/
          |                Word 0               |                Word 1          |
 MOSI   : [ Target Input Angle (Signed 16-bit) ] [   Dummy Data (16-bit 0x0000) ]
 MISO   : [ COS Output (From PREVIOUS Frame)   ] [ SIN Output (CURRENT Angle)  ]
-
 ```
 
-* **Angle Input Format**: Signed 16-bit integer mapping $[-32768, +32767]$ to $[-180^\circ, +180^\circ]$.
-* **Output Format**: Q1.15 signed fixed-point mapping $[-32768, +32767]$ to $[-1.0, +0.999969]$.
+* **Angle Input Format**: Signed 16-bit integer mapping `[-32768, +32767]` to `[-180°, +180°)`.
+* **Output Format**: Q1.15 signed fixed-point mapping `[-32768, +32767]` to `[-1.0, +0.999969]`.
