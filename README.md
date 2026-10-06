@@ -1,6 +1,6 @@
 # cordic130 — 16-Bit Fixed-Point CORDIC on Sky130
 
-A high-precision, low-latency circular CORDIC (Coordinate Rotation Digital Computer) hardware accelerator for the **SkyWater Sky130 (130 nm)** open-source PDK, hardened with the **OpenLane 1.x** automated ASIC flow.
+A high-precision, circular CORDIC (Coordinate Rotation Digital Computer) hardware accelerator for the **SkyWater Sky130 (130 nm)** open-source PDK, hardened with the **OpenLane 1.x** automated ASIC flow.
 
 The coprocessor accepts a 16-bit target rotation angle over an SPI bus and computes both Sine and Cosinein Q1.15 fixed-point format using a 15-stage iterative micro-rotation DSP engine.
 
